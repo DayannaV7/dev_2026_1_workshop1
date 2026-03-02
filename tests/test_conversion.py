@@ -59,7 +59,7 @@ class TestConversion:
         assert self.conversion.decimal_a_binario(1) == "1"
         assert self.conversion.decimal_a_binario(2) == "10"
         assert self.conversion.decimal_a_binario(10) == "1010"
-        # Test con potencias de 2
+        # Test con potencias de 2 espacio a medida que crece el tamaño de la entrada, enfocándose en el peor escenario. No mide el tiempo exacto en segundos, sino
         assert self.conversion.decimal_a_binario(8) == "1000"
         assert self.conversion.decimal_a_binario(16) == "10000"
         assert self.conversion.decimal_a_binario(255) == "11111111"
