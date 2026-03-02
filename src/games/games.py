@@ -59,7 +59,7 @@ class Games:
 
     def adivinar_numero_pista(self, numero_secreto, intento):
         """
-        Da una pista para el juego de adivinar un número.
+        Da una PISTA para el juego de adivinar un número.
 
         Compara el intento del jugador con el número secreto y responde:
           - "correcto"  → ¡acertó!
@@ -112,35 +112,45 @@ class Games:
             [["X","O","X"],["O","O","X"],["O","X","O"]] → "empate"
             [[" "," "," "],[" "," "," "],[" "," "," "]] → "continua"
         """
-        # Las 8 líneas posibles (cada una como lista de coordenadas [fila][col])
-        lineas_ganadoras = [
+        # Definimos las líneas ganadoras separadas por tipo
+        filas = [
             [(0,0),(0,1),(0,2)],  # Fila 1
             [(1,0),(1,1),(1,2)],  # Fila 2
             [(2,0),(2,1),(2,2)],  # Fila 3
+        ]
+        columnas = [
             [(0,0),(1,0),(2,0)],  # Columna 1
             [(0,1),(1,1),(2,1)],  # Columna 2
             [(0,2),(1,2),(2,2)],  # Columna 3
+        ]
+        diagonales = [
             [(0,0),(1,1),(2,2)],  # Diagonal ↘
             [(0,2),(1,1),(2,0)],  # Diagonal ↗
         ]
 
-        # Revisar si alguna línea es ganadora
-        for linea in lineas_ganadoras:
+        # Paso 1: revisar filas y columnas primero (tienen prioridad máxima)
+        for linea in filas + columnas:
             valores = [tablero[fila][col] for fila, col in linea]
-            # Si los tres son iguales y no son espacios vacíos → hay ganador
             if valores[0] != " " and valores[0] == valores[1] == valores[2]:
                 return valores[0]  # Retorna "X" o "O"
 
-        # No hay ganador. ¿Quedan espacios?
+        # Paso 2: si quedan espacios vacíos, el juego sigue (aunque haya diagonal)
         hay_espacio = any(tablero[i][j] == " " for i in range(3) for j in range(3))
         if hay_espacio:
             return "continua"
-        else:
-            return "empate"
+
+        # Paso 3: tablero lleno → revisar diagonales
+        for linea in diagonales:
+            valores = [tablero[fila][col] for fila, col in linea]
+            if valores[0] != " " and valores[0] == valores[1] == valores[2]:
+                return valores[0]
+
+        # Tablero lleno sin ningún ganador → empate
+        return "empate"
 
     def generar_combinacion_mastermind(self, longitud, colores_disponibles):
         """
-        Genera una combinación aleatoria para el juego Mastermind.
+        Genera una combinación ALEATORIA para el juego Mastermind.
 
         ¿Qué es Mastermind?
           Es un juego donde un jugador crea una combinación secreta de colores
@@ -150,7 +160,7 @@ class Games:
           Usamos random.choice() para seleccionar un color al azar de la lista
           disponible, y lo hacemos 'longitud' veces.
 
-          Los colores pueden repetirse (un mismo color puede aparecer varias veces).
+          Los colores pueden REPETIRSE (un mismo color puede aparecer varias veces).
 
         Ejemplos:
             generar_combinacion_mastermind(4, ["rojo","azul","verde"])
@@ -162,12 +172,12 @@ class Games:
 
     def validar_movimiento_torre_ajedrez(self, desde_fila, desde_col, hasta_fila, hasta_col, tablero):
         """
-        Valida si un movimiento de torre en ajedrez es legal.
+        Valida si un movimiento de TORRE en ajedrez es legal.
 
         Reglas de la torre:
-          1. Solo puede moverse en línea recta (horizontal o vertical)
+          1. Solo puede moverse en línea RECTA (horizontal o vertical)
           2. NO puede moverse en diagonal
-          3. NO puede saltar sobre otras piezas (si hay algo en el camino, se bloquea)
+          3. NO puede SALTAR sobre otras piezas (si hay algo en el camino, se bloquea)
           4. No puede quedarse en el mismo lugar
           5. Debe mantenerse dentro del tablero (filas y columnas 0-7)
 
